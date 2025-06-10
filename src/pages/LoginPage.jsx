@@ -1,8 +1,10 @@
 import { useState } from "react";
+import {useAuth} from '../context/auth/useAuth.jsx'
 
 export default function LoginPage(){
     const [usuario, setUsuario] = useState('');
     const [contraseña, setContraseña] = useState('');
+    const {signin} = useAuth();
 
     const handleChangeUsuario = (event) =>{
         setUsuario(event.target.value);
@@ -12,9 +14,9 @@ export default function LoginPage(){
         setContraseña(event.target.value);
     }
 
-    const handleSubmit = (event) =>{
+    const handleSubmit = async(event) =>{
         event.preventDefault();
-        console.log(usuario, contraseña);
+        await signin({usuario, contraseña})
     }
 
     return (

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { AuthProvider } from "../context/auth/authProvides"
+import { AuthProvider } from "../context/auth/authProvider.jsx"
 import Header from '../components/Header.jsx'
 import AdminLayout from "./admin/AdminLayout"
 import ProfesorLayout from "./profesor/ProfesorLayout"
