@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 export const AuthProvider = ({children}) =>{
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [errores, setErrores] = useState([]);
 
     useEffect(()=>{
         const checkLogin = async()=>{
@@ -18,7 +19,7 @@ export const AuthProvider = ({children}) =>{
                         setUser(res.data);
                     }
                 } catch (error) {
-                    console.log(error.response.data.message);
+                    setErrores(error.response.data.errores);
                     setIsAuthenticated(false);
                     setUser(null);
                 }
@@ -34,7 +35,7 @@ export const AuthProvider = ({children}) =>{
             setUser(res.data);
             setIsAuthenticated(true);
         } catch (error) {
-            console.log(error.response.data.message)
+            setErrores(error.response.data.errores);
         }
     }
 
@@ -45,7 +46,7 @@ export const AuthProvider = ({children}) =>{
             setUser(null);
             setIsAuthenticated(false);
         } catch (error) {
-            console.log(error.response.data.message)
+            setErrores(error.response.data.errores);
         }
     } 
 
@@ -53,6 +54,8 @@ export const AuthProvider = ({children}) =>{
        < AuthContext.Provider value={{
         user,
         isAuthenticated,
+        errores,
+        setErrores,
         signin,
         signout
        }}>

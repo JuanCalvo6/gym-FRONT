@@ -1,12 +1,15 @@
 import salir from '../assets/salir.png';
 import logo from '../assets/logo.png';
 import { useAuth } from '../context/auth/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 export default function Header (){
     const {signout} = useAuth();
+    const navigate = useNavigate();
 
     const handleClick = async()=>{
         await signout();
+        navigate('/');
     }
     return(
         <header className="relative w-full min-h-14 bg-red-800 flex items-center px-4">
