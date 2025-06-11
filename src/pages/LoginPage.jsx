@@ -51,7 +51,7 @@ export default function LoginPage(){
                                 value = {usuario}
                                 onChange={handleChangeUsuario}
                             />
-                            {errores.usuario && <p className="text-red-600 text-sm -mt-4 mb-2">{errores.usuario}</p>}
+                            {errores.errores?.usuario && <p className="text-red-600 text-sm -mt-4 mb-2">{errores.errores.usuario}</p>}
                         </div>
                         <div>
                             <label className="block mb-1" htmlFor="contraseña" >Contraseña :</label>
@@ -62,11 +62,12 @@ export default function LoginPage(){
                                 value={contraseña}
                                 onChange={handleChangeContraseña}
                             />
-                            {errores.contraseña && <p className="text-red-600 text-sm -mt-4 mb-2">{errores.contraseña}</p>}
+                            {errores.errores?.contraseña && <p className="text-red-600 text-sm -mt-4 mb-2">{errores.errores.contraseña}</p>}
                         </div>
                         <button className="w-auto bg-red-800 text-white px-8 py-2  text-lg rounded-2xl self-center hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900" type="submit">
                             INGRESAR
                         </button>
+                        {errores?.message && <p className="text-red-600 text-sm self-center">{errores.message}</p>}
                     </form>
                 </div>
         </div>

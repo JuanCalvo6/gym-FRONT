@@ -35,7 +35,8 @@ export const AuthProvider = ({children}) =>{
             setUser(res.data);
             setIsAuthenticated(true);
         } catch (error) {
-            setErrores(error.response.data.errores);
+            console.log(error.response.data);
+            setErrores(error.response.data);
         }
     }
 
@@ -46,7 +47,7 @@ export const AuthProvider = ({children}) =>{
             setUser(null);
             setIsAuthenticated(false);
         } catch (error) {
-            setErrores(error.response.data.errores);
+            setErrores(error.response.data);
         }
     } 
 
