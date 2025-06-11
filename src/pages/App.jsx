@@ -4,6 +4,8 @@ import Header from '../components/Header.jsx'
 import AdminLayout from "./admin/AdminLayout"
 import ProfesorLayout from "./profesor/ProfesorLayout"
 import LoginPage from "./LoginPage"
+import ProtectedRoute from "../components/ProtectedRoute.jsx"
+import ClientesPage from "./profesor/ClientesPage.jsx"
 
 function App() {
 
@@ -14,14 +16,22 @@ function App() {
         <Routes>
           <Route path ='/' element ={ <LoginPage />} />
 
-          <Route path ='/admin' element ={<AdminLayout />}>
+          <Route path ='/admin' element ={
+            <ProtectedRoute rol={["admin"]}>
+              <AdminLayout />
+            </ProtectedRoute>
+            }>
             <Route path="ejercicios" element ={<h1>Administrar ejercicios</h1>} />
             <Route path="pases" element={<h1>Administrar pases</h1>}/>
             <Route path="profesores" element={<h1>Administrar profesores</h1>} />
           </Route>
           
-          <Route path ='/profesor' element ={<ProfesorLayout />}>
-            <Route index element={<h1> Pagina de clientes</h1>} />
+          <Route path ='/profesor' element ={
+            <ProtectedRoute rol={["prof"]}>
+              <ProfesorLayout />
+            </ProtectedRoute>
+            }>
+            <Route index element={ <ClientesPage /> } />
             <Route path="clientes/:id/inscripciones" element ={<h1>Incripciones de cliente</h1>} />
             <Route path="clientes/:id/asistencias" element={<h1>Asistencias de Cliente</h1>}/>
             <Route path="clientes/:id/rutinas" element={<h1>Rutinas de cliente</h1>} />

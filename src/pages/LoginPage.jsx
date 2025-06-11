@@ -9,13 +9,11 @@ export default function LoginPage(){
     const navigate = useNavigate();
 
     useEffect(()=>{
-        if(isAuthenticated){
-            if(user.tipo === 'admin')
-                navigate('/admin')
-            if(user.tipo === 'prof')
-                navigate('/profesor')
+        if(isAuthenticated && user){
+            if(user.tipo === 'admin') navigate('/admin');
+            else if(user.tipo === 'prof') navigate('/profesor');
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, user]);
 
     useEffect(()=>{
         if(errores){
