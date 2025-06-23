@@ -9,3 +9,15 @@ export const listarClientesRequest = async(busqueda)=>{
         });
         return res;   
 }
+
+export const crearClienteRequest = async(cliente)=>{
+    const res = await axios.post('/clientes', cliente);
+
+    return res;
+}
+
+export const modificarCLienteRequest = async(cliente)=>{
+    const res = await axios.put(`/clientes/${cliente.idCliente}`, cliente);
+
+    return res;
+}

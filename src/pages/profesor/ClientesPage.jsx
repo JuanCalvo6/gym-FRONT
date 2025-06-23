@@ -14,7 +14,7 @@ export default function ClientesPage (){
         huella: '',
         telefono: '',
         direccion: '',
-        email: ''}
+        mail: ''}
     )
     const [clientes, setClientes] = useState([]);
     const [errorCliente, setErrorCliente] = useState('');
@@ -22,15 +22,16 @@ export default function ClientesPage (){
     const {user} = useAuth();
     const modalRef = useRef(null);
 
-    useEffect(()=>{
-        const cargaInicial = async()=>{
-            try {
-               const res = await listarClientesRequest({buscar: '', incluirBajas: false});
-               await setClientes(res.data);
-            } catch (error) {
-                console.log(error);
-            }
+    const cargaInicial = async()=>{
+        try {
+            const res = await listarClientesRequest({buscar: '', incluirBajas: false});
+            await setClientes(res.data);
+        } catch (error) {
+            console.log(error);
         }
+    }
+
+    useEffect(()=>{
         cargaInicial();
     },[])
 
@@ -63,10 +64,11 @@ export default function ClientesPage (){
             />
 
             <NuevoModificarCliente
-                titulo={modoForm === 'nuevo' ? "Nuevo Cliente" : "Modificar Cliente"}
+                modo={modoForm}
                 cliente={cliente} 
                 modalRef={modalRef} 
                 setCliente={setCliente} 
+                cargarClientes={cargaInicial}
             />
         </div>
     )

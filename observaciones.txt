@@ -1,0 +1,3 @@
+Eliminar la columna de Estado al mostrar los Clientes. Los dados de baja estan en claro.
+
+Logica para las acciones: mostrar darAlta o darBaja segun el estado actual del cliente.
