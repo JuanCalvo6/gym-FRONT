@@ -61,6 +61,7 @@ export default function ClientesPage (){
                 clientes={clientes}
                 onClickModificar={handleModificar}
                 errorCliente={errorCliente}
+                cargarClientes={cargaInicial}
             />
 
             <NuevoModificarCliente

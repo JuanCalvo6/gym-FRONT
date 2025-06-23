@@ -5,8 +5,9 @@ import edit from '../assets/edit.png'
 import eliminar from '../assets/eliminar.png'
 import inscripcion from '../assets/inscripcion.png'
 import rutina from '../assets/rutina.png'
+import { darAltaClienteRequest, darBajaClienteRequest } from '../services/clientes'
 
-export default function TablaClientes ({clientes, errorCliente, onClickModificar}){   
+export default function TablaClientes ({clientes, errorCliente, onClickModificar, cargarClientes}){   
 
     const handleEditar =(cliente) =>{
         onClickModificar(cliente);
@@ -24,13 +25,22 @@ export default function TablaClientes ({clientes, errorCliente, onClickModificar
         console.log("Rutina del cliente con id: ",cliente.idCliente);
     }
 
-    const handleDarBaja = (cliente) =>{
-        console.log("Dar de baja al cliente con id: ",cliente.idCliente);
-        alert("Seguro?")
+    const handleDarBaja = async(cliente) =>{
+        try {
+            await darBajaClienteRequest(cliente.idCliente);
+            cargarClientes();
+        } catch (error) {
+            console.log(error.response.data.message);
+        }
     }
 
-    const handleDarAlta = (cliente) =>{
-        console.log("Dar de alta al cliente con id: ",cliente.idCliente);
+    const handleDarAlta = async(cliente) =>{
+        try {
+            await darAltaClienteRequest(cliente.idCliente);
+            cargarClientes();
+        } catch (error) {
+            console.log(error.response.data.message);
+        }
     }
 
     const handleEliminar = (cliente) =>{
@@ -58,7 +68,7 @@ export default function TablaClientes ({clientes, errorCliente, onClickModificar
                         <div className="px-2 border-b-1 truncate hidden md:block">{cliente.telefono}</div>
                         <div className="px-2 border-b-1 truncate hidden md:block">{cliente.direccion}</div>
                         <div className="px-2 border-b-1 hidden md:block">{cliente.estado}</div>
-                        <div className="px-1 border-b-1 border-r-1 grid grid-cols-7 justify-between">
+                        <div className="px-1 border-b-1 border-r-1 grid grid-cols-6 justify-between">
                             <button onClick={()=>handleEditar(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4 px-auto" src={edit} title="Editar Cliente" alt="Editar"/>
                             </button>
@@ -71,12 +81,14 @@ export default function TablaClientes ({clientes, errorCliente, onClickModificar
                             <button onClick={() =>handleRutina(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4" src={rutina} title="Ver Rutinas" alt="Rutinas"/>
                             </button>
+                            {cliente.estado === 'A' ?
                             <button onClick={() =>handleDarBaja(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4" src={baja} title="Dar Baja" alt="Baja"/>
                             </button>
+                            :
                             <button onClick={() =>handleDarAlta(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4" src={alta} title="Dar Alta" alt="Alta"/>
-                            </button>
+                            </button>}
                             <button onClick={() =>handleEliminar(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4" src={eliminar} title="Eliminar" alt="Eliminar"/>
                             </button>

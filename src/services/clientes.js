@@ -21,3 +21,15 @@ export const modificarCLienteRequest = async(cliente)=>{
 
     return res;
 }
+
+export const darBajaClienteRequest = async(id)=>{
+    const res = await axios.patch(`/clientes/${id}/baja`);
+
+    return res;
+}
+
+export const darAltaClienteRequest = async(id)=>{
+    const res = await axios.patch(`/clientes/${id}/alta`);
+
+    return res;
+}
