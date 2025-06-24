@@ -33,3 +33,9 @@ export const darAltaClienteRequest = async(id)=>{
 
     return res;
 }
+
+export const eliminarClienteRequest = async(id)=>{
+    const res = await axios.delete(`/clientes/${id}`)
+
+    return res;
+}

@@ -5,7 +5,7 @@ import edit from '../assets/edit.png'
 import eliminar from '../assets/eliminar.png'
 import inscripcion from '../assets/inscripcion.png'
 import rutina from '../assets/rutina.png'
-import { darAltaClienteRequest, darBajaClienteRequest } from '../services/clientes'
+import { darAltaClienteRequest, darBajaClienteRequest, eliminarClienteRequest } from '../services/clientes'
 
 export default function TablaClientes ({clientes, errorCliente, onClickModificar, cargarClientes}){   
 
@@ -43,8 +43,17 @@ export default function TablaClientes ({clientes, errorCliente, onClickModificar
         }
     }
 
-    const handleEliminar = (cliente) =>{
-        console.log("Eliminar al cliente con id: ",cliente.idCliente);
+    const handleEliminar = async(cliente) =>{
+        const confirmar = window.confirm(`¿Esta seguro que quiere eliminar a ${cliente.nombres}?`);
+        try {
+            if(confirmar){
+                await eliminarClienteRequest(cliente.idCliente);
+                cargarClientes();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
 
     return (

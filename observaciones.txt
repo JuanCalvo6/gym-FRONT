@@ -1,1 +1,3 @@
 Eliminar la columna de Estado al mostrar los Clientes. Los dados de baja estan en claro.
+
+Controlar que pasa cuando se da de baja el ultimo cliente de Alta, se muestra de forma erronea.
