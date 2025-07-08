@@ -6,6 +6,9 @@ import ProfesorLayout from "./profesor/ProfesorLayout"
 import LoginPage from "./LoginPage"
 import ProtectedRoute from "../components/ProtectedRoute.jsx"
 import ClientesPage from "./profesor/ClientesPage.jsx"
+import InscripcionesPage from "./cliente/InscripcionesPage.jsx"
+import AsistenciasPage from "./cliente/AsistenciasPage.jsx"
+import RutinasPage from "./cliente/RutinasPage.jsx"
 
 function App() {
 
@@ -32,9 +35,9 @@ function App() {
             </ProtectedRoute>
             }>
             <Route index element={ <ClientesPage /> } />
-            <Route path="clientes/:id/inscripciones" element ={<h1>Incripciones de cliente</h1>} />
-            <Route path="clientes/:id/asistencias" element={<h1>Asistencias de Cliente</h1>}/>
-            <Route path="clientes/:id/rutinas" element={<h1>Rutinas de cliente</h1>} />
+            <Route path="clientes/:id/inscripciones" element ={<InscripcionesPage />} />
+            <Route path="clientes/:id/asistencias" element={<AsistenciasPage />}/>
+            <Route path="clientes/:id/rutinas" element={<RutinasPage />} />
           </Route>
           
         </Routes>

@@ -6,23 +6,25 @@ import eliminar from '../assets/eliminar.png'
 import inscripcion from '../assets/inscripcion.png'
 import rutina from '../assets/rutina.png'
 import { darAltaClienteRequest, darBajaClienteRequest, eliminarClienteRequest } from '../services/clientes'
+import { useNavigate } from 'react-router-dom'
 
 export default function TablaClientes ({clientes, errorCliente, onClickModificar, cargarClientes}){   
+    const navigate = useNavigate();
 
     const handleEditar =(cliente) =>{
         onClickModificar(cliente);
     }
 
     const handleAsistencia = (cliente) =>{
-        console.log("Asistencias del cliente con id: ",cliente.idCliente);
+        navigate(`/profesor/clientes/${cliente.idCliente}/asistencias`);
     }
 
     const handleInscripcion = (cliente) =>{
-        console.log("Inscripcion del cliente con id: ",cliente.idCliente);
+        navigate(`/profesor/clientes/${cliente.idCliente}/inscripciones`);
     }
 
     const handleRutina = (cliente) =>{
-        console.log("Rutina del cliente con id: ",cliente.idCliente);
+        navigate(`/profesor/clientes/${cliente.idCliente}/rutinas`);
     }
 
     const handleDarBaja = async(cliente) =>{
@@ -105,6 +107,6 @@ export default function TablaClientes ({clientes, errorCliente, onClickModificar
                 </div>
                 ))}
                 
-            </div>
+        </div>
     )
 }

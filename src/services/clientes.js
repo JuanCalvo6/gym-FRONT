@@ -10,6 +10,12 @@ export const listarClientesRequest = async(busqueda)=>{
         return res;   
 }
 
+export const obtenerClienteRequest = async(id) =>{
+    const res = await axios.get(`/clientes/${id}`);
+
+    return res;
+}
+
 export const crearClienteRequest = async(cliente)=>{
     const res = await axios.post('/clientes', cliente);
 
@@ -36,6 +42,12 @@ export const darAltaClienteRequest = async(id)=>{
 
 export const eliminarClienteRequest = async(id)=>{
     const res = await axios.delete(`/clientes/${id}`)
+
+    return res;
+}
+
+export const obtenerInscripcionesRequest = async(id)=>{
+    const res = await axios.get(`/clientes/${id}/inscripciones`)
 
     return res;
 }
