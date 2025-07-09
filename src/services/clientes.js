@@ -48,6 +48,12 @@ export const eliminarClienteRequest = async(id)=>{
 
 export const obtenerInscripcionesRequest = async(id)=>{
     const res = await axios.get(`/clientes/${id}/inscripciones`)
+    
+    return res;
+}
+
+export const crearInscripcionRequest = async(inscripcion)=>{
+    const res =  await axios.post(`/clientes/${inscripcion.idCliente}/inscripciones`, inscripcion)
 
     return res;
 }
