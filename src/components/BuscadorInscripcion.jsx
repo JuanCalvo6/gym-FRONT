@@ -6,6 +6,7 @@ export default function BuscadorInscripcion({setClientes, setErrorCliente, onCli
 
     const handleBuscador = async(event) =>{
         event.preventDefault();
+
         try {
             const res = await listarClientesRequest({incluirBajas});
             await setClientes(res.data);
@@ -29,7 +30,8 @@ export default function BuscadorInscripcion({setClientes, setErrorCliente, onCli
                             name="baja" 
                             id="baja"
                             checked={incluirBajas}
-                            onChange={(e)=>setIncluirBajas(e.target.checked)}
+                            onChange={(e)=>{
+                                setIncluirBajas(e.target.checked)}}
                         />
                         <label htmlFor="baja">Mostrar Bajas</label>
                     </div>

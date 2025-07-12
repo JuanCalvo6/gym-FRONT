@@ -46,8 +46,12 @@ export const eliminarClienteRequest = async(id)=>{
     return res;
 }
 
-export const obtenerInscripcionesRequest = async(id)=>{
-    const res = await axios.get(`/clientes/${id}/inscripciones`)
+export const obtenerInscripcionesRequest = async(id, baja)=>{
+    const res = await axios.get(`/clientes/${id}/inscripciones`, {
+        params: {
+                incluirBajas: baja
+            }
+    })
     
     return res;
 }
