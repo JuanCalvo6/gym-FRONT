@@ -18,6 +18,7 @@ export default function InscripcionesPage (){
     const [cliente, setCliente] = useState(null);
     const [inscripciones, setInscripciones] = useState([]);
     const [modo, setModo] = useState('nuevo');
+    const [bajas, setBajas] = useState(false)
     const [inscripcion, setInscripcion] = useState({
         idProfesor: user.id,
         idCliente: id,
@@ -44,13 +45,14 @@ export default function InscripcionesPage (){
             const res = await obtenerInscripcionesRequest(idCliente, baja);
             setInscripciones(res.data);
         } catch (error) {
+            setInscripciones([]);
             console.log(error.response.data);
         }
     }
 
     useEffect(() =>{
         datosCliente(id);
-        datosInscripciones(id, true);
+        datosInscripciones(id, bajas);
     }, [id])
 
     const handleNuevo = () =>{
@@ -88,21 +90,25 @@ export default function InscripcionesPage (){
     const handleBaja = async(inscripcion) =>{
         try {
             await darBajaInscripcionRequest(inscripcion.idInscripcion);
-            datosInscripciones(id,true);
-            console.log("Inscripcion dada de Baja", inscripcion);
+            datosInscripciones(id,bajas);
         } catch (error) {
             console.log(error.response.data.message)
         }
     }
 
     const handleAlta = async(inscripcion) =>{
-        try {
-            await darAltaInscripcionRequest(inscripcion.idInscripcion);
-            datosInscripciones(id, true);
-            console.log("Inscripcion dada de Alta", inscripcion);
-        } catch (error) {
-            console.log(error.response.data.message)
-        }
+        const denegado = inscripciones.find((inscripcion)=> inscripcion.estado === 'A');
+        if(denegado){
+            console.log("Ya hay una inscripcion activa")
+            return
+        }else{
+            try {
+                await darAltaInscripcionRequest(inscripcion.idInscripcion);
+                datosInscripciones(id, bajas);
+            } catch (error) {
+                console.log(error.response.data.message)
+            }
+        }        
     }
 
     const handleEliminar = async(inscripcion) =>{
@@ -111,8 +117,7 @@ export default function InscripcionesPage (){
         try {
             if(confirmar){
                 await eliminarInscripcionRequest(inscripcion.idInscripcion);
-                datosInscripciones(id, true);
-                console.log("Inscripcion Eliminada", inscripcion);
+                datosInscripciones(id, bajas);
             }
             
         } catch (error) {
@@ -137,6 +142,10 @@ export default function InscripcionesPage (){
             </div>
             <BuscadorInscripcion
                 onClickNuevo={handleNuevo}
+                datosInscripciones={datosInscripciones}
+                bajas={bajas}
+                setBajas={setBajas}
+                idCliente={id}
             />
             <div className="border-2 w-5/6 max-h-100 overflow-auto mx-4 mb-4">
                 {inscripciones.length === 0 ?
@@ -176,7 +185,7 @@ export default function InscripcionesPage (){
                                 <img  className="h-4" src={eliminar} title="Eliminar" alt="Eliminar"/>
                             </button>
                         </div>
-                </div>
+                    </div>
                 ))}
                 
             </div>

@@ -44,12 +44,13 @@ export default function NuevaModificarInscripcion ({modalRef, modo, inscripcion,
         }
 
         try {
+            console.log(inscripcion)
             await crearInscripcionRequest(inscripcion);
-            datosInscripciones(inscripcion.idCliente, false);
+            datosInscripciones(inscripcion.idCliente, true);
             modalRef.current?.close();
 
         } catch (error) {
-            console.log(error.response.data.message);
+            console.log(error);
             setErrores(prev => ({
                 ...prev, 
                 api : error.response.data.message
@@ -96,19 +97,19 @@ export default function NuevaModificarInscripcion ({modalRef, modo, inscripcion,
                     
                     <div className="flex gap-2">
                         <label htmlFor="diaInicio">Inicio: </label>
-                        <input readOnly={modo != 'nuevo'}  value={inscripcion.diaInicio} onChange={handleInputForm} className="w-2/3 ml-auto px-1 border border-gray-500 shadow mb-2 rounded-sm" type="date" id="diaInicio" name='diaInicio'/>
+                        <input readOnly={modo != 'nuevo'}  value={inscripcion.diaInicio || ""} onChange={handleInputForm} className="w-2/3 ml-auto px-1 border border-gray-500 shadow mb-2 rounded-sm" type="date" id="diaInicio" name='diaInicio'/>
                     </div>
                     {errores?.diaInicio && <p className="text-red-600 text-right text-sm -mt-4">{errores.diaInicio}</p>}
                     
                     <div className="flex gap-2">
                         <label htmlFor="diaFin">Fin: </label>
-                        <input value={inscripcion.diaFin} onChange={handleInputForm} className="w-2/3 ml-auto px-1 border border-gray-500 shadow mb-2 rounded-sm" type="date" id="diaFin" name='diaFin'/>
+                        <input value={inscripcion.diaFin || ""} onChange={handleInputForm} className="w-2/3 ml-auto px-1 border border-gray-500 shadow mb-2 rounded-sm" type="date" id="diaFin" name='diaFin'/>
                     </div>
                     {errores?.diaFin && <p className="text-red-600 text-right text-sm -mt-4">{errores.diaFin}</p>}
                     
                     <div className="flex gap-2">
                         <label htmlFor="precio">Precio: </label>
-                        <input readOnly value={inscripcion.precio} onChange={handleInputForm} className="w-2/3 ml-auto px-1 border border-gray-500 shadow mb-2 rounded-sm" type="number" id="precio" name='precio'/>
+                        <input readOnly value={inscripcion.precio || ""} onChange={handleInputForm} className="w-2/3 ml-auto px-1 border border-gray-500 shadow mb-2 rounded-sm" type="number" id="precio" name='precio'/>
                     </div>
                     {errores?.precio && <p className="text-red-600 text-right text-sm -mt-4">{errores.precio}</p>}
 
