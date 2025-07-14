@@ -69,7 +69,6 @@ export const obtenerAsistenciasRequest = async(id) =>{
 }
 
 export const crearAsistenciaRequest = async(id, fecha) =>{
-    console.log(fecha);
     const res = await axios.post(`/clientes/${id}/asistencias`, {
         fecha: fecha
     });

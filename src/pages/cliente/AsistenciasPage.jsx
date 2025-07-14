@@ -97,6 +97,7 @@ export default function AsistenciasPage (){
                 asistencia={asistencia}
                 setAsistencia={setAsistencia}
                 datosCliente={datosCliente}
+                datosAsistencias={datosAsistencias}
             />
         </div>
     )

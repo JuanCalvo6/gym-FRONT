@@ -1,6 +1,6 @@
 import { crearAsistenciaRequest } from "../services/clientes"
 
-export default function NuevaAsistencia({modalRef, asistencia, setAsistencia, datosCliente}){
+export default function NuevaAsistencia({modalRef, asistencia, setAsistencia, datosCliente, datosAsistencias}){
 
     const handleInput = (event)=>{
         const {name, value} =  event.target
@@ -25,8 +25,7 @@ export default function NuevaAsistencia({modalRef, asistencia, setAsistencia, da
         try {
             await crearAsistenciaRequest(asistencia.idCliente, fecha);
             datosCliente(asistencia.idCliente);
-            console.log("Asistencia Creada con exito")
-            console.log(asistencia);
+            datosAsistencias(asistencia.idCliente);
             modalRef.current?.close();
         } catch (error) {
             console.log(error.response.data)
