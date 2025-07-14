@@ -75,3 +75,9 @@ export const crearAsistenciaRequest = async(id, fecha) =>{
 
     return res;
 }
+
+export const obtenerRutinasRequest = async(id) =>{
+    const res = await axios.get(`/clientes/${id}/rutinas`);
+
+    return res;
+}
