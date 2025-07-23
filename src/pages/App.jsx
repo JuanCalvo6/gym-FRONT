@@ -38,6 +38,7 @@ function App() {
             <Route path="clientes/:id/inscripciones" element ={<InscripcionesPage />} />
             <Route path="clientes/:id/asistencias" element={<AsistenciasPage />}/>
             <Route path="clientes/:id/rutinas" element={<RutinasPage />} />
+            <Route path="clientes/:id/rutinas/:idRutina/lineasDeRutina" element={<h1>Lineas de Rutina </h1>} />
           </Route>
           
         </Routes>

@@ -6,11 +6,11 @@ export default function NuevoModificarCliente({modo, cliente, modalRef, setClien
     const [errores, setErrores] = useState([]);
 
     useEffect(()=>{
-            if(errores){
-                const timer = setTimeout(() => setErrores(""), 3000);
-                return () => clearTimeout(timer);
-            }
-        },[errores])
+        if(errores){
+            const timer = setTimeout(() => setErrores(""), 3000);
+            return () => clearTimeout(timer);
+        }
+    },[errores])
 
     const handleForm =  async(event) => {
         event.preventDefault();
