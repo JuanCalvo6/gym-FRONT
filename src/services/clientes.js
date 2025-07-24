@@ -86,6 +86,12 @@ export const obtenerRutinasRequest = async({idCliente, bajas}) =>{
     return res;
 }
 
+export const obtenerRutinaRequest = async({id, idRutina}) =>{
+    const res = await axios.get(`/clientes/${id}/rutinas/${idRutina}`);
+
+    return res;
+}
+
 export const crearRutinaRequest = async(rutina) =>{
     const res =  await axios.post(`/clientes/${rutina.idCliente}/rutinas`, rutina);
 

@@ -43,7 +43,6 @@ export default function RutinasPage (){
 
     const handleBajas = (event)=>{
         setBajas(event.target.checked);
-        console.log("Mostrar Bajas");
     }
 
     const onClickNuevo = ()=>{
