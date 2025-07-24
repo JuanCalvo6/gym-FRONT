@@ -29,7 +29,7 @@ export default function RutinasPage (){
     
     const datosRutinas = async(idCliente) =>{
         try {
-            const res = await obtenerRutinasRequest(idCliente);
+            const res = await obtenerRutinasRequest({idCliente, bajas});
             setRutinas(res.data);
 
         } catch (error) {
@@ -39,7 +39,7 @@ export default function RutinasPage (){
     useEffect(()=>{
         datosCliente(id);
         datosRutinas(id);
-    },[id]);
+    },[id, bajas]);
 
     const handleBajas = (event)=>{
         setBajas(event.target.checked);
