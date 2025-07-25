@@ -23,3 +23,9 @@ export const modificarRutinaRequest = async(rutina)=>{
 
     return res;
 }
+
+export const obtenerLineasRutinaRequest  = async(id)=>{
+    const res = await axios.get(`/rutinas/${id}/lineasDeRutina`)
+
+    return res;
+}
