@@ -1,13 +1,24 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { obtenerRutinaRequest } from "../../services/clientes";
 import { obtenerLineasRutinaRequest } from "../../services/rutinas";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TablaLineasDeRutina from "../../components/TablaLineasDeRutina";
+import NuevaModificarLineaRutina from "../../components/NuevaModificarLineaRutina";
 
 export default function LineasDeRutina () {
     const {id, idRutina} =  useParams();
     const [rutina, setRutina] = useState([])
     const [lineasRutina, setLineasRutina] = useState([]);
+    const [lineaRutina, setLineaRutina] = useState({
+        idCliente : id,
+        idRutina: idRutina,
+        idEjercicio: "",
+        repeticiones: "",
+        series: "",
+        descanso: ""
+    });
+    const [modo, setModo] = useState('nuevo')
+    const modalRef = useRef();
     const navigate = useNavigate();
     
     const datosRutina = async() =>{
@@ -34,11 +45,25 @@ export default function LineasDeRutina () {
     }, []);
 
     const handleNuevo = ()=>{
-        console.log("Agregar nueva linea de ejercicio");
+        setModo('nuevo');
+        modalRef.current?.showModal();
     }
+
     const handleAtras = ()=>{
         navigate(`/profesor/clientes/${id}/rutinas`);
     }
+
+    const handleModificar = (dato) =>{
+        console.log(dato);
+        setModo('modificar');
+        setLineaRutina({
+            ...dato,
+            idCliente: id,
+            idRutina: idRutina
+        })
+        modalRef.current?.showModal();
+    }
+
     return(
         <div>
             <div className='mx-4 mt-2 mb-8'>
@@ -54,7 +79,9 @@ export default function LineasDeRutina () {
             </div>
 
             <TablaLineasDeRutina
-                lineasRutina={lineasRutina}     
+                lineasRutina={lineasRutina}
+                onclickModificar={handleModificar} 
+                datosLineasRutina={datosLineasRutina}   
             />
 
             <div className='flex justify-end mr-4'>
@@ -62,6 +89,14 @@ export default function LineasDeRutina () {
                     ATRAS
                 </button>
             </div>
+
+            <NuevaModificarLineaRutina
+                modalRef={modalRef}
+                modo={modo}
+                lineaRutina={lineaRutina}
+                setLineaRutina={setLineaRutina}
+                datosLineasRutina={datosLineasRutina}
+            />
         </div>
     )
 }

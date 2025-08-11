@@ -29,3 +29,7 @@ export const obtenerLineasRutinaRequest  = async(id)=>{
 
     return res;
 }
+
+export const crearLineaRutinaRequest = async(lineaRutina)=>{
+    await axios.post(`/rutinas/${lineaRutina.idRutina}/lineasDeRutina`,lineaRutina)
+}
