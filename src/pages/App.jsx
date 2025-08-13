@@ -10,6 +10,7 @@ import InscripcionesPage from "./cliente/InscripcionesPage.jsx"
 import AsistenciasPage from "./cliente/AsistenciasPage.jsx"
 import RutinasPage from "./cliente/RutinasPage.jsx"
 import LineasDeRutina from "./cliente/LineasDeRutina.jsx"
+import ProfesoresPage from "./admin/ProfesoresPage.jsx"
 
 function App() {
 
@@ -25,9 +26,9 @@ function App() {
               <AdminLayout />
             </ProtectedRoute>
             }>
-            <Route path="ejercicios" element ={<h1>Administrar ejercicios</h1>} />
+            <Route path="profesores" element={<ProfesoresPage/>} />
             <Route path="pases" element={<h1>Administrar pases</h1>}/>
-            <Route path="profesores" element={<h1>Administrar profesores</h1>} />
+            <Route path="ejercicios" element ={<h1>Administrar ejercicios</h1>} />
           </Route>
           
           <Route path ='/profesor' element ={
