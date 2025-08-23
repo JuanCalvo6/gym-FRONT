@@ -11,6 +11,7 @@ import AsistenciasPage from "./cliente/AsistenciasPage.jsx"
 import RutinasPage from "./cliente/RutinasPage.jsx"
 import LineasDeRutina from "./cliente/LineasDeRutina.jsx"
 import ProfesoresPage from "./admin/ProfesoresPage.jsx"
+import PasesPage from "./admin/PasesPage.jsx"
 
 function App() {
 
@@ -27,7 +28,7 @@ function App() {
             </ProtectedRoute>
             }>
             <Route path="profesores" element={<ProfesoresPage/>} />
-            <Route path="pases" element={<h1>Administrar pases</h1>}/>
+            <Route path="pases" element={<PasesPage/> }/>
             <Route path="ejercicios" element ={<h1>Administrar ejercicios</h1>} />
           </Route>
           
