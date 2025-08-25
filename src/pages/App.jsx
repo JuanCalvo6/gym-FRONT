@@ -12,6 +12,7 @@ import RutinasPage from "./cliente/RutinasPage.jsx"
 import LineasDeRutina from "./cliente/LineasDeRutina.jsx"
 import ProfesoresPage from "./admin/ProfesoresPage.jsx"
 import PasesPage from "./admin/PasesPage.jsx"
+import EjerciciosPage from "./admin/EjerciciosPage.jsx"
 
 function App() {
 
@@ -29,7 +30,7 @@ function App() {
             }>
             <Route path="profesores" element={<ProfesoresPage/>} />
             <Route path="pases" element={<PasesPage/> }/>
-            <Route path="ejercicios" element ={<h1>Administrar ejercicios</h1>} />
+            <Route path="ejercicios" element ={<EjerciciosPage/>} />
           </Route>
           
           <Route path ='/profesor' element ={
