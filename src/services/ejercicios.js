@@ -1,7 +1,10 @@
 import axios from './axios.js'
 
-export const listarEjerciciosRequest = async() =>{
-    const res = await axios.get('/ejercicios');
+export const listarEjerciciosRequest = async(bajas) =>{
+    console.log(bajas)
+    const res = await axios.get('/ejercicios', {
+        params: {bajas}
+    });
 
     return res;
 }

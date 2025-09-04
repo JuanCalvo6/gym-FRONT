@@ -11,7 +11,7 @@ export default function EjerciciosPage () {
 
     const datosEjercicios = async()=>{
         try {
-            const res = await listarEjerciciosRequest();
+            const res = await listarEjerciciosRequest(true);
             setEjercicios(res.data);
         } catch (error) {
             console.log(error);

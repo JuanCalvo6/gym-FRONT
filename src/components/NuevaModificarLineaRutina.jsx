@@ -7,7 +7,7 @@ export default function NuevaModificarLineaRutina ({modalRef, modo, lineaRutina,
     const [ejercicios, setEjercicios] = useState([]);
 
     const traerEjercicios = async () =>{
-        const res = await listarEjerciciosRequest();
+        const res = await listarEjerciciosRequest(false);
         setEjercicios(res.data);
     }
 
@@ -76,7 +76,7 @@ export default function NuevaModificarLineaRutina ({modalRef, modo, lineaRutina,
                     <label htmlFor="observaciones">Series: </label>
                     <input value={lineaRutina.series} onChange={handleInputForm} className=" px-1 border border-gray-500 shadow mb-2 rounded-sm" type="number" id="series" name='series'/>
                     <label htmlFor="observaciones">Descanso: </label>
-                    <input value={lineaRutina.descanso} onChange={handleInputForm} className=" px-1 border border-gray-500 shadow mb-2 rounded-sm" type="number" id="descanso" name='descanso'/>
+                    <input value={lineaRutina.descanso} onChange={handleInputForm} className=" px-1 border border-gray-500 shadow mb-2 rounded-sm" type="text" id="descanso" name='descanso'/>
                     
                     <div className="w-full mb-4 self-center flex justify-between ">
                         <button className="w-1/3 bg-red-800 text-white text-center py-2 text-lg rounded-2xl hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900">
