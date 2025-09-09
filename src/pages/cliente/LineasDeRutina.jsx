@@ -12,7 +12,7 @@ export default function LineasDeRutina () {
     const [lineaRutina, setLineaRutina] = useState({
         idCliente : id,
         idRutina: idRutina,
-        idEjercicio: "",
+        ejercicio: "",
         repeticiones: "",
         series: "",
         descanso: ""
@@ -54,7 +54,6 @@ export default function LineasDeRutina () {
     }
 
     const handleModificar = (dato) =>{
-        console.log(dato);
         setModo('modificar');
         setLineaRutina({
             ...dato,

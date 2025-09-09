@@ -36,7 +36,7 @@ export default function TablaLineasDeRutina ({lineasRutina, onclickModificar, da
             )}
             {lineasRutina?.map((lineaRutina)=>(
                 <div key={lineaRutina.idLineaDeRutina} className={`grid grid-cols-5 text-center divide-x divide-gray-500`}>
-                    <div className="px-2 border-b-1 border-l-1 truncate">{lineaRutina.nombre}</div>
+                    <div className="px-2 border-b-1 border-l-1 truncate">{lineaRutina.ejercicio}</div>
                     <div className="px-2 border-b-1 truncate ">{lineaRutina.repeticiones}</div>
                     <div className="px-2 border-b-1 truncate ">{lineaRutina.series}</div>
                     <div className="px-2 border-b-1 truncate ">{lineaRutina.descanso}</div>

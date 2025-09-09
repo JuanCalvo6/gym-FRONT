@@ -40,8 +40,7 @@ export const AuthProvider = ({children}) =>{
 
     const signout = async() =>{
         try {
-            const res = await logoutRequest();
-            console.log(res.data);
+            await logoutRequest();
             setUser(null);
             setIsAuthenticated(false);
         } catch (error) {

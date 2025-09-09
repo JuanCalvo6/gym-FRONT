@@ -4,8 +4,11 @@ import { listarClientesRequest } from "../../services/clientes";
 import BuscadorCliente from '../../components/BuscadorCliente'
 import TablaClientes from "../../components/TablaClientes";
 import NuevoModificarCliente from "../../components/NuevoModificarCliente";
+import { mayusWords } from "../../utils/mayus";
 
 export default function ClientesPage (){
+    const [buscar, setBuscar] = useState('');
+    const [incluirBajas, setIncluirBajas] = useState(false);
     const [cliente, setCliente] = useState({
         nombres: '',
         apellidos: '',
@@ -17,23 +20,24 @@ export default function ClientesPage (){
         mail: ''}
     )
     const [clientes, setClientes] = useState([]);
-    const [errorCliente, setErrorCliente] = useState('');
+    const [errorClientes, setErrorClientes] = useState('');
     const [modoForm, setModoForm] = useState('nuevo');
     const {user} = useAuth();
     const modalRef = useRef(null);
 
-    const cargaInicial = async()=>{
+    const datosClientes = async()=>{
         try {
-            const res = await listarClientesRequest({buscar: '', incluirBajas: false});
-            await setClientes(res.data);
+            const res = await listarClientesRequest({buscar, incluirBajas});
+            setClientes(res.data);
         } catch (error) {
-            console.log(error);
+            setClientes([]);
+            setErrorClientes(error.response.data.message);
         }
     }
 
     useEffect(()=>{
-        cargaInicial();
-    },[])
+        datosClientes();
+    },[]);
 
     const handleNuevo = () =>{
         setModoForm('nuevo');
@@ -48,10 +52,14 @@ export default function ClientesPage (){
 
     return (
         <div> 
-            <h1 className="mt-2 mx-4 mb-8">Profesor/a: {user.nombre} </h1>
+            <h1 className="mt-2 mx-4 mb-8">Profesor/a: {mayusWords(user.nombre)} </h1>
             <BuscadorCliente 
                 setClientes={setClientes}
-                setErrorCliente={setErrorCliente}
+                setErrorClientes={setErrorClientes}
+                buscar={buscar}
+                setBuscar={setBuscar}
+                incluirBajas={incluirBajas}
+                setIncluirBajas={setIncluirBajas}
                 onClickNuevo={handleNuevo}
                 modalRef={modalRef}
             />
@@ -59,9 +67,10 @@ export default function ClientesPage (){
             
             <TablaClientes 
                 clientes={clientes}
+                errorClientes={errorClientes}
+                setErrorClientes={setErrorClientes}
                 onClickModificar={handleModificar}
-                errorCliente={errorCliente}
-                cargarClientes={cargaInicial}
+                cargarClientes={datosClientes}
             />
 
             <NuevoModificarCliente
@@ -69,7 +78,7 @@ export default function ClientesPage (){
                 cliente={cliente} 
                 modalRef={modalRef} 
                 setCliente={setCliente} 
-                cargarClientes={cargaInicial}
+                cargarClientes={datosClientes}
             />
         </div>
     )

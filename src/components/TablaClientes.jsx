@@ -7,8 +7,9 @@ import inscripcion from '../assets/inscripcion.png'
 import rutina from '../assets/rutina.png'
 import { darAltaClienteRequest, darBajaClienteRequest, eliminarClienteRequest } from '../services/clientes'
 import { useNavigate } from 'react-router-dom'
+import { mayus } from '../utils/mayus'
 
-export default function TablaClientes ({clientes, errorCliente, onClickModificar, cargarClientes}){   
+export default function TablaClientes ({clientes, errorClientes, setErrorClientes, onClickModificar, cargarClientes}){   
     const navigate = useNavigate();
 
     const handleEditar =(cliente) =>{
@@ -32,7 +33,7 @@ export default function TablaClientes ({clientes, errorCliente, onClickModificar
             await darBajaClienteRequest(cliente.idCliente);
             cargarClientes();
         } catch (error) {
-            console.log(error.response.data.message);
+            setErrorClientes(error.response.data.message);
         }
     }
 
@@ -41,7 +42,7 @@ export default function TablaClientes ({clientes, errorCliente, onClickModificar
             await darAltaClienteRequest(cliente.idCliente);
             cargarClientes();
         } catch (error) {
-            console.log(error.response.data.message);
+            setErrorClientes(error.response.data.message);
         }
     }
 
@@ -53,7 +54,7 @@ export default function TablaClientes ({clientes, errorCliente, onClickModificar
                 cargarClientes();
             }
         } catch (error) {
-            console.log(error);
+            setErrorClientes(error.response.data.message);
         }
         
     }
@@ -61,24 +62,22 @@ export default function TablaClientes ({clientes, errorCliente, onClickModificar
     return (
         <div className="border-2 max-h-100 overflow-auto mx-4">
                 {clientes.length === 0 ? 
-                    (<div>{errorCliente}</div>
+                    (<div> {errorClientes} </div>
                     ):
-                    (<div className="bg-white grid grid-cols-2 md:grid-cols-[3fr_2fr_2fr_3fr_1fr_4fr] text-center divide-x divide-gray-500 sticky top-0">
+                    (<div className="bg-white grid grid-cols-2 md:grid-cols-[3fr_2fr_3fr_3fr_4fr] text-center divide-x divide-gray-500 sticky top-0">
                         <div className="border-t-1 border-b-1 border-l-1">Nombre</div>
                         <div className="border-t-1 border-b-1 hidden md:block">DNI</div>
                         <div className="border-t-1 border-b-1 hidden md:block">Telefono</div>
                         <div className="border-t-1 border-b-1 hidden md:block">Dirección</div>
-                        <div className="border-t-1 border-b-1 hidden md:block">Estado</div>
                         <div className="border-t-1 border-b-1 border-r-1">Acción</div>
                     </div>
                     )}
                 {clientes.map((cliente) =>(
-                    <div key={cliente.idCliente} className={`${cliente.estado === 'B' ? 'text-gray-400' : 'text-black'} grid grid-cols-2 md:grid-cols-[3fr_2fr_2fr_3fr_1fr_4fr] text-center divide-x divide-gray-500`}>
-                        <div className="px-2 border-b-1 border-l-1 text-left truncate">{cliente.apellidos}, {cliente.nombres}</div>
+                    <div key={cliente.idCliente} className={`${cliente.estado === 'B' ? 'text-gray-400' : 'text-black'} grid grid-cols-2 md:grid-cols-[3fr_2fr_3fr_3fr_4fr] text-center divide-x divide-gray-500`}>
+                        <div className="px-2 border-b-1 border-l-1 text-left truncate">{mayus(cliente.apellidos)}, {mayus(cliente.nombres)}</div>
                         <div className="px-2 border-b-1 truncate hidden md:block">{cliente.dni}</div>
                         <div className="px-2 border-b-1 truncate hidden md:block">{cliente.telefono}</div>
-                        <div className="px-2 border-b-1 truncate hidden md:block">{cliente.direccion}</div>
-                        <div className="px-2 border-b-1 hidden md:block">{cliente.estado}</div>
+                        <div className="px-2 border-b-1 truncate hidden md:block">{mayus(cliente.direccion)}</div>
                         <div className="px-1 border-b-1 border-r-1 grid grid-cols-6 justify-between">
                             <button onClick={()=>handleEditar(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4 px-auto" src={edit} title="Editar Cliente" alt="Editar"/>

@@ -1,20 +1,16 @@
-import { useState } from "react";
 import { listarClientesRequest } from "../services/clientes";
 
-export default function BuscadorCliente ({setClientes, setErrorCliente, onClickNuevo}){
-    const [buscar, setBuscar] = useState('');
-    const [incluirBajas, setIncluirBajas] = useState(false);
+export default function BuscadorCliente ({setClientes, setErrorClientes,buscar, setBuscar,incluirBajas, setIncluirBajas, onClickNuevo}){
 
     const handleBuscador = async(event) =>{
         event.preventDefault();
         try {
             const res = await listarClientesRequest({buscar,incluirBajas});
             await setClientes(res.data);
-            await setErrorCliente('');
 
         } catch (error) {
             await setClientes([]);
-            await setErrorCliente(error.response.data.message);
+            setErrorClientes(error.response.data.message);
         }
     }
 

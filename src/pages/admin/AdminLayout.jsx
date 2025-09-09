@@ -14,11 +14,6 @@ export default function AdminLayout (){
                         PASES
                     </button> 
                 </Link>
-                <Link to="/admin/ejercicios">
-                    <button className="w-auto bg-red-800 text-white px-8 py-2  text-lg rounded-2xl self-center hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900" type="submit">
-                        EJERCICIOS
-                    </button>
-                </Link>
             </nav>
            <Outlet/>
         </div>

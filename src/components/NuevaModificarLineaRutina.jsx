@@ -1,23 +1,12 @@
-import { useEffect, useState } from "react";
-import { listarEjerciciosRequest } from "../services/ejercicios";
 import { crearLineaRutinaRequest } from "../services/rutinas";
 import { modificarLineaRutinaRequest } from "../services/lineasDeRutina";
 
 export default function NuevaModificarLineaRutina ({modalRef, modo, lineaRutina, setLineaRutina, datosLineasRutina}){
-    const [ejercicios, setEjercicios] = useState([]);
 
-    const traerEjercicios = async () =>{
-        const res = await listarEjerciciosRequest(false);
-        setEjercicios(res.data);
-    }
-
-    useEffect(()=>{
-        traerEjercicios();
-    },[])
     const handleModalClose = () =>{
         setLineaRutina(prev =>({
             ...prev,
-            idEjercicio: '',
+            ejercicio: '',
             repeticiones: '',
             series: '',
             descanso: ''
@@ -35,7 +24,7 @@ export default function NuevaModificarLineaRutina ({modalRef, modo, lineaRutina,
             datosLineasRutina();
             setLineaRutina(prev =>({
                 ...prev,
-                idEjercicio: '',
+                ejercicio: '',
                 repeticiones: '',
                 series: '',
                 descanso: ''
@@ -62,15 +51,8 @@ export default function NuevaModificarLineaRutina ({modalRef, modo, lineaRutina,
                     {modo === 'nuevo' ? "Nuevo" : "Modificar"}                
                 </h1>
                 <form  onSubmit={handleForm} className="flex flex-col px-2 gap-2" method="dialog">
-                    <div className="flex gap-2">
-                        <label htmlFor="idEjercicio">Ejercicio: </label>
-                        <select value={lineaRutina.idEjercicio} onChange={handleInputForm} className="w-2/3 ml-auto px-1 border border-gray-500 shadow mb-2 rounded-sm" name="idEjercicio" id="idEjercicio">
-                            <option value=''>Seleccionar Ejercicio</option>
-                            {ejercicios?.map((ejercicio)=>(
-                                <option key={ejercicio.idEjercicio} value={ejercicio.idEjercicio} > {ejercicio.nombre} </option>
-                            ))}
-                        </select>
-                    </div>
+                    <label htmlFor="ejercicio">Ejercicio: </label>
+                    <input value={lineaRutina.ejercicio} onChange={handleInputForm} className=" px-1 border border-gray-500 shadow mb-2 rounded-sm" type="text" id="ejercicio" name='ejercicio'/>
                     <label htmlFor="observaciones">Repeticiones: </label>
                     <input value={lineaRutina.repeticiones} onChange={handleInputForm} className=" px-1 border border-gray-500 shadow mb-2 rounded-sm" type="text" id="repeticiones" name='repeticiones'/>
                     <label htmlFor="observaciones">Series: </label>
