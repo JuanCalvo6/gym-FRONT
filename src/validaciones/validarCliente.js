@@ -27,9 +27,6 @@ export default function validarCliente(cliente){
         errores.dni = "El dni solo acepta números";
     }
 
-    if(!cliente.huella)
-        errores.huella = "La huella es obligatoria";
-
     if(cliente.telefono && !/^\d{1,20}$/.test(cliente.telefono))
         errores.telefono = "El telefono solo acepta números";
 

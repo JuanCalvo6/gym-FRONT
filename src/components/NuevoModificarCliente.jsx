@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import validarCliente from "../validaciones/validarCliente";
 import { crearClienteRequest, modificarCLienteRequest } from "../services/clientes";
 
 export default function NuevoModificarCliente({modo, cliente, modalRef, setCliente, cargarClientes}){
@@ -14,12 +13,6 @@ export default function NuevoModificarCliente({modo, cliente, modalRef, setClien
 
     const handleForm =  async(event) => {
         event.preventDefault();
-        const erroresCliente = validarCliente(cliente);
-
-        if(Object.keys(erroresCliente).length > 0){
-            setErrores(erroresCliente);
-            return
-        }
         try {
             if(modo === 'nuevo')
                 await crearClienteRequest(cliente);
@@ -29,7 +22,7 @@ export default function NuevoModificarCliente({modo, cliente, modalRef, setClien
             cargarClientes();
             modalRef.current?.close();
         } catch (error) {
-            console.log(error)
+            setErrores(error.response.data.errores)
         }
         
     }
@@ -47,7 +40,6 @@ export default function NuevoModificarCliente({modo, cliente, modalRef, setClien
             apellidos: '',
             tipoDni: '',
             dni: '',
-            huella: '',
             telefono: '',
             direccion: '',
             mail: ''})
@@ -85,11 +77,6 @@ export default function NuevoModificarCliente({modo, cliente, modalRef, setClien
                     {errores?.tipoDni && <p className="text-red-600 text-right text-sm -mt-4 mb-1">{errores.tipoDni}</p>}
                     {errores?.dni && <p className="text-red-600 text-right text-sm -mt-4">{errores.dni}</p>}
                     <div className="flex gap-2">
-                        <label htmlFor="huella">Huella: </label>
-                        <input value={cliente.huella} onChange={handleInputForm} className="w-2/3 ml-auto px-1 border border-gray-500 shadow mb-2 rounded-sm" type="text" id="huella" name='huella'/>
-                    </div>
-                    {errores?.huella && <p className="text-red-600 text-right text-sm -mt-4">{errores.huella}</p>}
-                    <div className="flex gap-2">
                         <label htmlFor="telefono">Telefono: </label>
                         <input  value={cliente.telefono} onChange={handleInputForm} className="w-2/3 ml-auto px-1 border border-gray-500 shadow mb-2 rounded-sm" type="number" id="telefono" name='telefono'/>
                     </div>
@@ -108,6 +95,7 @@ export default function NuevoModificarCliente({modo, cliente, modalRef, setClien
                         <button className="w-1/3 bg-red-800 text-white text-center py-2 mb-4 text-lg rounded-2xl hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900">Aceptar</button>
                         <button type='button' onClick={handleModalClose} className="w-1/3 bg-red-800 text-white text-center py-2 mb-4 text-lg rounded-2xl hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900">Cancelar</button>
                     </div>
+                    {errores?.message && <p className="text-red-600 text-center text-sm -mt-4">{errores.message}</p>}
                     
                 </form>
             </div>

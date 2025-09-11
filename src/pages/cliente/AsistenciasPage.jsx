@@ -2,10 +2,12 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState, useRef } from "react";
 import { obtenerClienteRequest, obtenerAsistenciasRequest } from "../../services/clientes";
 import NuevaAsistencia from "../../components/NuevaAsistencia";
+import { mayus, mayusWords } from "../../utils/mayus";
 
 export default function AsistenciasPage (){
     const {id} = useParams();
     const [cliente, setCliente] = useState(null)
+    const [errores, setErrores] = useState([])
     const [asistencias, setAsistencias] = useState([])
     const [asistencia, setAsistencia] = useState({
         idCliente: id,
@@ -20,7 +22,7 @@ export default function AsistenciasPage (){
                 const res = await obtenerClienteRequest(idCliente);
                 setCliente(res.data[0]);
             } catch (error) {
-                console.log(error);
+                setErrores(error.response.data.errores)
             }
         }
     
@@ -29,7 +31,7 @@ export default function AsistenciasPage (){
             const res = await obtenerAsistenciasRequest(idCliente);
             setAsistencias(res.data)
         } catch (error) {
-            console.log(error)
+            setErrores(error.response.data.errores)
         }
     }
     useEffect(()=>{
@@ -57,7 +59,7 @@ export default function AsistenciasPage (){
             <div>
                 {cliente ? (
                     <div className='mx-4 mt-2 mb-8'>
-                        Cliente: {cliente.apellidos}, {cliente.nombres}
+                        Cliente: { mayus(cliente.apellidos)}, {mayusWords(cliente.nombres)}
                     </div>
                 ) : (
                     <div>Cargando datos del cliente...</div>
@@ -73,7 +75,7 @@ export default function AsistenciasPage (){
             </div>
             <div className="border-2 w-5/6 max-h-100 overflow-auto mx-4 mb-4">
                 {asistencias.length === 0 ?
-                (<div>El Cliente no tiene asistencias</div> ) : 
+                (<div>{errores?.message}</div> ) : 
                 (<div className="bg-white grid grid-cols-2 text-center divide-x divide-gray-500 sticky top-0">
                     <div className="border-t-1 border-b-1 border-l-1">Hora</div>
                     <div className="border-t-1 border-b-1 hidden md:block">Dia</div>

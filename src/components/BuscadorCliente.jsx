@@ -10,7 +10,7 @@ export default function BuscadorCliente ({setClientes, setErrorClientes,buscar, 
 
         } catch (error) {
             await setClientes([]);
-            setErrorClientes(error.response.data.message);
+            setErrorClientes(error.response.data.errores);
         }
     }
 

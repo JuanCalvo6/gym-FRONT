@@ -31,7 +31,7 @@ export default function ClientesPage (){
             setClientes(res.data);
         } catch (error) {
             setClientes([]);
-            setErrorClientes(error.response.data.message);
+            setErrorClientes(error.response.data.errores);
         }
     }
 

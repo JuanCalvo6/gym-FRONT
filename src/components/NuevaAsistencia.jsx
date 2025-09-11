@@ -1,6 +1,15 @@
+import { useState, useEffect } from "react"
 import { crearAsistenciaRequest } from "../services/clientes"
 
 export default function NuevaAsistencia({modalRef, asistencia, setAsistencia, datosCliente, datosAsistencias}){
+    const [errores, setErrores] = useState([])
+
+    useEffect(()=>{
+            if(errores){
+                const timer = setTimeout(() => setErrores(""), 3000);
+                return () => clearTimeout(timer);
+            }
+        },[errores])
 
     const handleInput = (event)=>{
         const {name, value} =  event.target
@@ -28,7 +37,8 @@ export default function NuevaAsistencia({modalRef, asistencia, setAsistencia, da
             datosAsistencias(asistencia.idCliente);
             modalRef.current?.close();
         } catch (error) {
-            console.log(error.response.data)
+            setErrores(error.response.data.errores)
+            console.log(error.response.data.errores);
         }
     }
     return (
@@ -50,6 +60,7 @@ export default function NuevaAsistencia({modalRef, asistencia, setAsistencia, da
                         <button className="w-1/3 bg-red-800 text-white text-center py-2 text-lg rounded-2xl hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900">Aceptar</button>
                         <button type='button' onClick={handleModalClose} className="w-1/3 bg-red-800 text-white text-center py-2  text-lg rounded-2xl hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900">Cancelar</button>
                     </div>
+                    {errores?.message && <p className="text-red-600 text-center text-sm -mt-4">{errores.message}</p>}
                 </form>
             </div>
         </dialog>

@@ -2,10 +2,9 @@ import alta from '../assets/alta.png'
 import asist from '../assets/asist.png'
 import baja from '../assets/baja.png'
 import edit from '../assets/edit.png'
-import eliminar from '../assets/eliminar.png'
 import inscripcion from '../assets/inscripcion.png'
 import rutina from '../assets/rutina.png'
-import { darAltaClienteRequest, darBajaClienteRequest, eliminarClienteRequest } from '../services/clientes'
+import { darAltaClienteRequest, darBajaClienteRequest } from '../services/clientes'
 import { useNavigate } from 'react-router-dom'
 import { mayus } from '../utils/mayus'
 
@@ -33,7 +32,7 @@ export default function TablaClientes ({clientes, errorClientes, setErrorCliente
             await darBajaClienteRequest(cliente.idCliente);
             cargarClientes();
         } catch (error) {
-            setErrorClientes(error.response.data.message);
+            setErrorClientes(error.response.data);
         }
     }
 
@@ -42,27 +41,15 @@ export default function TablaClientes ({clientes, errorClientes, setErrorCliente
             await darAltaClienteRequest(cliente.idCliente);
             cargarClientes();
         } catch (error) {
-            setErrorClientes(error.response.data.message);
+            setErrorClientes(error.response.data);
         }
     }
 
-    const handleEliminar = async(cliente) =>{
-        const confirmar = window.confirm(`¿Esta seguro que quiere eliminar a ${cliente.nombres}?`);
-        try {
-            if(confirmar){
-                await eliminarClienteRequest(cliente.idCliente);
-                cargarClientes();
-            }
-        } catch (error) {
-            setErrorClientes(error.response.data.message);
-        }
-        
-    }
 
     return (
         <div className="border-2 max-h-100 overflow-auto mx-4">
                 {clientes.length === 0 ? 
-                    (<div> {errorClientes} </div>
+                    (<div> {errorClientes.message} </div>
                     ):
                     (<div className="bg-white grid grid-cols-2 md:grid-cols-[3fr_2fr_3fr_3fr_4fr] text-center divide-x divide-gray-500 sticky top-0">
                         <div className="border-t-1 border-b-1 border-l-1">Nombre</div>
@@ -78,7 +65,7 @@ export default function TablaClientes ({clientes, errorClientes, setErrorCliente
                         <div className="px-2 border-b-1 truncate hidden md:block">{cliente.dni}</div>
                         <div className="px-2 border-b-1 truncate hidden md:block">{cliente.telefono}</div>
                         <div className="px-2 border-b-1 truncate hidden md:block">{mayus(cliente.direccion)}</div>
-                        <div className="px-1 border-b-1 border-r-1 grid grid-cols-6 justify-between">
+                        <div className="px-1 border-b-1 border-r-1 grid grid-cols-5 justify-between">
                             <button onClick={()=>handleEditar(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4 px-auto" src={edit} title="Editar Cliente" alt="Editar"/>
                             </button>
@@ -99,9 +86,6 @@ export default function TablaClientes ({clientes, errorClientes, setErrorCliente
                             <button onClick={() =>handleDarAlta(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4" src={alta} title="Dar Alta" alt="Alta"/>
                             </button>}
-                            <button onClick={() =>handleEliminar(cliente)} className="cursor-pointer flex justify-center items-center">
-                                <img  className="h-4" src={eliminar} title="Eliminar" alt="Eliminar"/>
-                            </button>
                         </div>
                 </div>
                 ))}
