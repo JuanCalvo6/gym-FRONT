@@ -62,6 +62,12 @@ export const crearInscripcionRequest = async(inscripcion)=>{
     return res;
 }
 
+export const modificarInscripcionRequest = async(inscripcion)=>{
+    const res =  await axios.put(`/inscripciones/${inscripcion.idInscripcion}`, inscripcion);
+
+    return res;
+}
+
 export const obtenerAsistenciasRequest = async(id) =>{
     const res = await axios.get(`/clientes/${id}/asistencias`)
 
@@ -76,7 +82,7 @@ export const crearAsistenciaRequest = async(id, fecha) =>{
     return res;
 }
 
-export const obtenerRutinasRequest = async({idCliente, bajas}) =>{
+export const obtenerRutinasRequest = async(idCliente, bajas) =>{
     const res = await axios.get(`/clientes/${idCliente}/rutinas`, {
         params: {
             bajas: bajas

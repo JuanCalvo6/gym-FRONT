@@ -9,7 +9,7 @@ import ClientesPage from "./profesor/ClientesPage.jsx"
 import InscripcionesPage from "./cliente/InscripcionesPage.jsx"
 import AsistenciasPage from "./cliente/AsistenciasPage.jsx"
 import RutinasPage from "./cliente/RutinasPage.jsx"
-import LineasDeRutina from "./cliente/LineasDeRutina.jsx"
+import LineasDeRutinaPage from "./cliente/LineasDeRutinaPage.jsx"
 import ProfesoresPage from "./admin/ProfesoresPage.jsx"
 import PasesPage from "./admin/PasesPage.jsx"
 
@@ -40,7 +40,7 @@ function App() {
             <Route path="clientes/:id/inscripciones" element ={<InscripcionesPage />} />
             <Route path="clientes/:id/asistencias" element={<AsistenciasPage />}/>
             <Route path="clientes/:id/rutinas" element={<RutinasPage />} />
-            <Route path="clientes/:id/rutinas/:idRutina/lineasDeRutina" element={<LineasDeRutina />} />
+            <Route path="clientes/:id/rutinas/:idRutina/lineasDeRutina" element={<LineasDeRutinaPage />} />
           </Route>
           
         </Routes>

@@ -4,10 +4,14 @@ import { obtenerLineasRutinaRequest } from "../../services/rutinas";
 import { useEffect, useRef, useState } from "react";
 import TablaLineasDeRutina from "../../components/TablaLineasDeRutina";
 import NuevaModificarLineaRutina from "../../components/NuevaModificarLineaRutina";
+import { eliminarLineaRutinaRequest } from '../../services/lineasDeRutina'
 
-export default function LineasDeRutina () {
+import { mayusWords } from "../../utils/mayus";
+
+export default function LineasDeRutinaPage () {
     const {id, idRutina} =  useParams();
-    const [rutina, setRutina] = useState([])
+    const [rutina, setRutina] = useState([]);
+    const [erroresLineas, setErroresLineas] = useState([]);
     const [lineasRutina, setLineasRutina] = useState([]);
     const [lineaRutina, setLineaRutina] = useState({
         idCliente : id,
@@ -35,7 +39,8 @@ export default function LineasDeRutina () {
             const res = await obtenerLineasRutinaRequest(idRutina);
             setLineasRutina(res.data);
         } catch (error) {
-            console.log(error);
+            setLineasRutina([]);
+            setErroresLineas(error.response.data.errores);
         }
     }
 
@@ -63,10 +68,21 @@ export default function LineasDeRutina () {
         modalRef.current?.showModal();
     }
 
+    const handleEliminar = async(dato) =>{
+        const confirmar = window.confirm("¿Está seguro que desea eliminar el Ejercicio?");
+        try {
+            if(confirmar)
+                await eliminarLineaRutinaRequest(dato.idLineaDeRutina);
+             datosLineasRutina();
+        } catch (error) {
+            console.log(error);
+        }         
+    }
+
     return(
         <div>
             <div className='mx-4 mt-2 mb-8'>
-                        Rutina: {rutina.nombre}
+                        Rutina: {mayusWords(rutina.nombre)}
             </div>
             <div className="flex  justify-between gap-4  mx-4 mb-2">
                 <div>
@@ -79,6 +95,8 @@ export default function LineasDeRutina () {
 
             <TablaLineasDeRutina
                 lineasRutina={lineasRutina}
+                erroresLineas={erroresLineas}
+                onClickEliminar={handleEliminar}
                 onclickModificar={handleModificar} 
                 datosLineasRutina={datosLineasRutina}   
             />

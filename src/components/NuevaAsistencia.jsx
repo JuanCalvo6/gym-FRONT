@@ -38,7 +38,6 @@ export default function NuevaAsistencia({modalRef, asistencia, setAsistencia, da
             modalRef.current?.close();
         } catch (error) {
             setErrores(error.response.data.errores)
-            console.log(error.response.data.errores);
         }
     }
     return (

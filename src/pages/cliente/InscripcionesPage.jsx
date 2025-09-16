@@ -1,22 +1,23 @@
 import alta from '../../assets/alta.png' 
 import baja from '../../assets/baja.png'
 import edit from '../../assets/edit.png'
-import eliminar from '../../assets/eliminar.png'
-
 
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from '../../context/auth/useAuth';
 import { useParams, useNavigate } from "react-router-dom"
 import { obtenerClienteRequest, obtenerInscripcionesRequest } from "../../services/clientes";
-import { darBajaInscripcionRequest, darAltaInscripcionRequest, eliminarInscripcionRequest } from '../../services/inscripciones';
+import { darBajaInscripcionRequest, darAltaInscripcionRequest } from '../../services/inscripciones';
 import BuscadorInscripcion from '../../components/BuscadorInscripcion';
 import NuevaModificarInscripcion from '../../components/NuevaModificarInscripcion';
+import { mayusWords } from '../../utils/mayus';
+import { formatFecha } from '../../utils/fechaFormat';
 
 export default function InscripcionesPage (){
     const {user} = useAuth();
     const {id} = useParams();
     const [cliente, setCliente] = useState(null);
     const [inscripciones, setInscripciones] = useState([]);
+    const [errorInscripciones, setErrorInscripciones] = useState([]);
     const [modo, setModo] = useState('nuevo');
     const [bajas, setBajas] = useState(false)
     const [inscripcion, setInscripcion] = useState({
@@ -36,7 +37,7 @@ export default function InscripcionesPage (){
             const res = await obtenerClienteRequest(idCliente);
             setCliente(res.data[0]);
         } catch (error) {
-            console.log(error.response.data);
+            console.log(error);
         }
     }
 
@@ -46,7 +47,7 @@ export default function InscripcionesPage (){
             setInscripciones(res.data);
         } catch (error) {
             setInscripciones([]);
-            console.log(error.response.data);
+            setErrorInscripciones(error.response.data.errores);
         }
     }
 
@@ -55,36 +56,38 @@ export default function InscripcionesPage (){
         datosInscripciones(id, bajas);
     }, [id])
 
+    
     const handleNuevo = () =>{
         setModo('nuevo');
         const inicio = new Date();
         const fin = new Date();
         fin.setMonth(inicio.getMonth()+1);
 
-        const formatoFecha = (fecha) => fecha.toISOString().split("T")[0];
+        const datoFecha = (fecha) => fecha.toISOString().split("T")[0];
         setInscripcion(prev => ({
             ...prev, 
-            diaInicio : formatoFecha(inicio),
-            diaFin: formatoFecha(fin),
+            diaInicio : datoFecha(inicio),
+            diaFin: datoFecha(fin),
         }));
         modalRef.current?.showModal();
     }
 
     const handleModificar = (inscripcion) =>{
         setModo('modificar');
-        const diaInicio = new Date(inscripcion.inicio);
-        const diaFin = new Date(inscripcion.fin);
+        const inicio = new Date(inscripcion.diaInicio);
+        const fin = new Date(inscripcion.diaFin);
         const formatoFecha = (fecha) => fecha.toISOString().split("T")[0];
   
         setInscripcion(prev => ({
             ...prev,
+            idInscripcion: inscripcion.idInscripcion,
             idPase: inscripcion.idPase,
-            diaInicio: formatoFecha(diaInicio),
-            diaFin: formatoFecha(diaFin),
+            diaInicio: formatoFecha(inicio),
+            diaFin: formatoFecha(fin),
             precio: inscripcion.precio
         }));
-        modalRef.current?.showModal();
 
+        modalRef.current?.showModal();
     }
 
     const handleBaja = async(inscripcion) =>{
@@ -92,37 +95,18 @@ export default function InscripcionesPage (){
             await darBajaInscripcionRequest(inscripcion.idInscripcion);
             datosInscripciones(id,bajas);
         } catch (error) {
-            console.log(error.response.data.message)
+            setErrorInscripciones(error.response.data.errores);
         }
     }
 
     const handleAlta = async(inscripcion) =>{
-        const denegado = inscripciones.find((inscripcion)=> inscripcion.estado === 'A');
-        if(denegado){
-            console.log("Ya hay una inscripcion activa")
-            return
-        }else{
-            try {
-                await darAltaInscripcionRequest(inscripcion.idInscripcion);
-                datosInscripciones(id, bajas);
-            } catch (error) {
-                console.log(error.response.data.message)
-            }
-        }        
-    }
-
-    const handleEliminar = async(inscripcion) =>{
-         const confirmar = window.confirm(`¿Esta seguro que quiere eliminar a ${cliente.nombres}?`);
-
         try {
-            if(confirmar){
-                await eliminarInscripcionRequest(inscripcion.idInscripcion);
-                datosInscripciones(id, bajas);
-            }
-            
+            await darAltaInscripcionRequest(inscripcion.idInscripcion);
+            datosInscripciones(id, bajas);
         } catch (error) {
-            console.log(error.response.data.message)
+            setErrorInscripciones(error.response.data.errores);
         }
+              
     }
 
     const handleAtras = () =>{
@@ -134,7 +118,7 @@ export default function InscripcionesPage (){
             <div>
                 {cliente ? (
                     <div className='mx-4 mt-2 mb-8'>
-                        Cliente: {cliente.apellidos}, {cliente.nombres}
+                        Cliente: { mayusWords(cliente.apellidos)}, {mayusWords(cliente.nombres)}
                     </div>
                 ) : (
                     <div>Cargando datos del cliente...</div>
@@ -150,30 +134,28 @@ export default function InscripcionesPage (){
             <div className="border-2 w-5/6 max-h-100 overflow-auto mx-4 mb-4">
                 {inscripciones.length === 0 ?
                     (
-                        <div>El cliente no tiene inscripciones</div> 
+                        <div>{errorInscripciones.message}</div> 
                     ) :
                     (
-                        <div className="bg-white grid grid-cols-2 md:grid-cols-[3fr_2fr_2fr_3fr_1fr_4fr] text-center divide-x divide-gray-500 sticky top-0">
+                        <div className="bg-white grid grid-cols-2 md:grid-cols-[3fr_3fr_2fr_3fr_4fr] text-center divide-x divide-gray-500 sticky top-0">
                             <div className="border-t-1 border-b-1 border-l-1">Inicio</div>
                             <div className="border-t-1 border-b-1 hidden md:block">Fin</div>
                             <div className="border-t-1 border-b-1 hidden md:block">Pase</div>
                             <div className="border-t-1 border-b-1 hidden md:block">Precio</div>
-                            <div className="border-t-1 border-b-1 hidden md:block">Estado</div>
                             <div className="border-t-1 border-b-1 border-r-1">Acción</div>
                         </div>
                 )} 
                 {inscripciones?.map((inscripcion) =>(
-                    <div key={inscripcion.idInscripcion} className={`${inscripcion.estado === 'B' ? 'text-gray-400' : 'text-black'} grid grid-cols-2 md:grid-cols-[3fr_2fr_2fr_3fr_1fr_4fr] text-center divide-x divide-gray-500`}>
-                        <div className="px-2 border-b-1 border-l-1 truncate">{inscripcion.inicio}</div>
-                        <div className="px-2 border-b-1 truncate hidden md:block">{inscripcion.fin}</div>
+                    <div key={inscripcion.idInscripcion} className={`${inscripcion.estado === 'b' ? 'text-gray-400' : 'text-black'} grid grid-cols-2 md:grid-cols-[3fr_3fr_2fr_3fr_4fr] text-center divide-x divide-gray-500`}>
+                        <div className="px-2 border-b-1 border-l-1 truncate">{formatFecha(inscripcion.diaInicio)}</div>
+                        <div className="px-2 border-b-1 truncate hidden md:block">{formatFecha(inscripcion.diaFin)}</div>
                         <div className="px-2 border-b-1 truncate hidden md:block">{inscripcion.pase}</div>
                         <div className="px-2 border-b-1 truncate hidden md:block">{inscripcion.precio}</div>
-                        <div className="px-2 border-b-1 hidden md:block">{inscripcion.estado}</div>
-                        <div className="px-1 border-b-1 border-r-1 grid grid-cols-3 justify-between">
+                        <div className="px-1 border-b-1 border-r-1 grid grid-cols-2 justify-between">
                             <button onClick={()=>handleModificar(inscripcion)} className="cursor-pointer flex justify-center items-center">
-                                <img  className="h-4 px-auto" src={edit} title="Editar Cliente" alt="Editar"/>
+                                <img  className="h-4 px-auto" src={edit} title="Editar Inscripcion" alt="Editar"/>
                             </button>
-                            {inscripcion.estado === 'A' ?
+                            {inscripcion.estado === 'a' ?
                             <button onClick={()=> handleBaja(inscripcion)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4" src={baja} title="Dar Baja" alt="Baja"/>
                             </button>
@@ -181,9 +163,6 @@ export default function InscripcionesPage (){
                             <button onClick={()=> handleAlta(inscripcion)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4" src={alta} title="Dar Alta" alt="Alta"/>
                             </button>}
-                            <button onClick={()=> handleEliminar(inscripcion)} className="cursor-pointer flex justify-center items-center">
-                                <img  className="h-4" src={eliminar} title="Eliminar" alt="Eliminar"/>
-                            </button>
                         </div>
                     </div>
                 ))}

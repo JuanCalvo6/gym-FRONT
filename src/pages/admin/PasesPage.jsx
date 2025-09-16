@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function PasesPage (){
     const [pases, setPases] = useState([]);
+    const [erroresPases, setErroresPases] = useState([]);
     const [pase, setPase] = useState([]);
     const [modo, setModo] = useState('nuevo');
     const modalRef = useRef();
@@ -14,7 +15,8 @@ export default function PasesPage (){
             const res = await listarPasesRequest();
             setPases(res.data);
         } catch (error) {
-            console.log(error);
+            setPases([]);
+            setErroresPases(error.response.data.errores);
         } 
     }
 
@@ -48,6 +50,7 @@ export default function PasesPage (){
             <div className="flex flex-col-2 mt-2 gap-2">
                 <TablaPases
                     pases={pases}
+                    erroresPases={erroresPases}
                     onClickModificar={handleModificar}
                     datosPases={datosPases}
                 />

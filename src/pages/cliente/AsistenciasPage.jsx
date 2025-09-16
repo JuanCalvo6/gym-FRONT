@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { obtenerClienteRequest, obtenerAsistenciasRequest } from "../../services/clientes";
 import NuevaAsistencia from "../../components/NuevaAsistencia";
 import { mayus, mayusWords } from "../../utils/mayus";
+import { formatFecha } from "../../utils/fechaFormat";
 
 export default function AsistenciasPage (){
     const {id} = useParams();
@@ -78,13 +79,13 @@ export default function AsistenciasPage (){
                 (<div>{errores?.message}</div> ) : 
                 (<div className="bg-white grid grid-cols-2 text-center divide-x divide-gray-500 sticky top-0">
                     <div className="border-t-1 border-b-1 border-l-1">Hora</div>
-                    <div className="border-t-1 border-b-1 hidden md:block">Dia</div>
+                    <div className="border-t-1 border-b-1 border-r-1">Dia</div>
                 </div>
                 )}
                 {asistencias?.map((asistencia,id)=>(
                     <div key={id} className="text-black grid grid-cols-2 text-center divide-x divide-gray-500">
                         <div className="px-2 border-b-1 border-l-1 truncate">{new Date(asistencia.fecha).toTimeString().slice(0, 5)}</div>
-                        <div className="px-2 border-b-1 truncate hidden md:block">{new Date(asistencia.fecha).toISOString().split("T")[0]}</div>
+                        <div className="px-2 border-b-1 truncate border-r-1">{formatFecha(asistencia.fecha)}</div>
                     </div>
                 ))}
             </div>

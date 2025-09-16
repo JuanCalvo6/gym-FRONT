@@ -60,7 +60,7 @@ export default function TablaClientes ({clientes, errorClientes, setErrorCliente
                     </div>
                     )}
                 {clientes.map((cliente) =>(
-                    <div key={cliente.idCliente} className={`${cliente.estado === 'B' ? 'text-gray-400' : 'text-black'} grid grid-cols-2 md:grid-cols-[3fr_2fr_3fr_3fr_4fr] text-center divide-x divide-gray-500`}>
+                    <div key={cliente.idCliente} className={`${cliente.estado === 'b' ? 'text-gray-400' : 'text-black'} grid grid-cols-2 md:grid-cols-[3fr_2fr_3fr_3fr_4fr] text-center divide-x divide-gray-500`}>
                         <div className="px-2 border-b-1 border-l-1 text-left truncate">{mayus(cliente.apellidos)}, {mayus(cliente.nombres)}</div>
                         <div className="px-2 border-b-1 truncate hidden md:block">{cliente.dni}</div>
                         <div className="px-2 border-b-1 truncate hidden md:block">{cliente.telefono}</div>
@@ -78,7 +78,7 @@ export default function TablaClientes ({clientes, errorClientes, setErrorCliente
                             <button onClick={() =>handleRutina(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4" src={rutina} title="Ver Rutinas" alt="Rutinas"/>
                             </button>
-                            {cliente.estado === 'A' ?
+                            {cliente.estado === 'a' ?
                             <button onClick={() =>handleDarBaja(cliente)} className="cursor-pointer flex justify-center items-center">
                                 <img  className="h-4" src={baja} title="Dar Baja" alt="Baja"/>
                             </button>

@@ -36,8 +36,8 @@ export default function NuevaModificarRutina ({modalRef, modo, rutina, setRutina
             }));
         modalRef.current?.close();
         } catch (error) {
-            console.log(error.response.data)
-            setErrores(error.response.data.errores)
+            console.log(error);
+            
         }
         
     }
@@ -56,7 +56,7 @@ export default function NuevaModificarRutina ({modalRef, modo, rutina, setRutina
                 </h1>
                 <form onSubmit={handleForm}  className="flex flex-col px-2 gap-2" method="dialog">
                     <label htmlFor="nombre">Nombre: </label>
-                    <input readOnly={modo!='nueva'} value={rutina.nombre} onChange={handleInputForm} className=" px-1 border border-gray-500 shadow mb-2 rounded-sm" type="text" id="nombre" name='nombre'/>
+                    <input value={rutina.nombre} onChange={handleInputForm} className=" px-1 border border-gray-500 shadow mb-2 rounded-sm" type="text" id="nombre" name='nombre'/>
                     {errores?.nombre && <p className="text-red-600 text-right text-sm -mt-4">{errores.nombre}</p>}
                     <label htmlFor="observaciones">Observaciones: </label>
                     <textarea 
@@ -73,7 +73,7 @@ export default function NuevaModificarRutina ({modalRef, modo, rutina, setRutina
                         <button className="w-1/3 bg-red-800 text-white text-center py-2 text-lg rounded-2xl hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900">Aceptar</button>
                         <button type='button' onClick={handleModalClose} className="w-1/3 bg-red-800 text-white text-center py-2  text-lg rounded-2xl hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900">Cancelar</button>
                     </div>
-                    {errores?.message && <p className="text-red-600 text-right text-sm -mt-4">{errores.message}</p>}    
+                    {errores?.message && <p className="text-red-600 text-center text-sm -mt-4">{errores.message}</p>}
                 </form>
             </div>
         </dialog>

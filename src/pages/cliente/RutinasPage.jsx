@@ -3,11 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { obtenerClienteRequest, obtenerRutinasRequest } from "../../services/clientes";
 import NuevaModificarRutina from "../../components/NuevaModificarRutina";
 import TablaRutinas from "../../components/TablaRutinas";
+import {mayusWords} from "../../utils/mayus.js" 
 
 export default function RutinasPage (){
     const {id} = useParams();
     const [cliente, setCliente] = useState('');
     const [rutinas, setRutinas] = useState([]);
+    const [erroresRutinas, setErroresRutinas] = useState([]);
     const [rutina, setRutina] = useState({
         idCliente: id,
         nombre: '',
@@ -27,18 +29,19 @@ export default function RutinasPage (){
         }
     }
     
-    const datosRutinas = async(idCliente) =>{
+    const datosRutinas = async(idCliente, bajas) =>{
         try {
-            const res = await obtenerRutinasRequest({idCliente, bajas});
+            const res = await obtenerRutinasRequest(idCliente, bajas);
             setRutinas(res.data);
 
         } catch (error) {
-            console.log(error)
+            setRutinas([]);
+            setErroresRutinas(error.response.data.errores);
         }
     }
     useEffect(()=>{
         datosCliente(id);
-        datosRutinas(id);
+        datosRutinas(id, bajas);
     },[id, bajas]);
 
     const handleBajas = (event)=>{
@@ -67,7 +70,7 @@ export default function RutinasPage (){
             <div>
                 {cliente ? (
                     <div className='mx-4 mt-2 mb-8'>
-                        Cliente: {cliente.apellidos}, {cliente.nombres}
+                        Cliente: {mayusWords(cliente.apellidos)}, {mayusWords(cliente.nombres)}
                     </div>
                 ) : (
                     <div>Cargando datos del cliente...</div>
@@ -96,6 +99,8 @@ export default function RutinasPage (){
             <TablaRutinas
                 rutinas = {rutinas}
                 datosRutinas={datosRutinas}
+                erroresRutinas={erroresRutinas}
+                bajas={bajas}
                 idCliente ={id}
                 onClickModificar = {handleModificar}
             />

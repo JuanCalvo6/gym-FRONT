@@ -6,6 +6,7 @@ import NuevoModificarProfesor from "../../components/NuevoModificarProfesor";
 export default function ProfesoresPage () {
 
     const [profesores, setProfesores] = useState([]);
+    const [erroresProfesores, setErroresProfesores] = useState([])
     const [profesor, setProfesor] = useState([]);
     const [modo, setModo] = useState('nuevo');
     const modalRef = useRef();
@@ -15,7 +16,8 @@ export default function ProfesoresPage () {
             const res = await obtenerProfesoresRequest();
             setProfesores(res.data);
         } catch (error) {
-            console.log(error);
+            setProfesores([]);
+            setErroresProfesores(error.response.data.errores);
         }
     }
 
@@ -50,6 +52,7 @@ export default function ProfesoresPage () {
             <div className="flex flex-col-2 mt-2 gap-2">
                 <TablaProfesores
                     profesores = {profesores}
+                    erroresProfesores={erroresProfesores}
                     onClickModificar = {handleModificar}
                     datosProfesores={datosProfesores}
                 />

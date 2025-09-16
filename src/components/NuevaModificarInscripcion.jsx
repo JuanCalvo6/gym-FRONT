@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { listarPasesRequest } from "../services/pases";
-import { crearInscripcionRequest } from "../services/clientes";
-import validarInscripcion from "../validaciones/validarInscripcion";
+import { crearInscripcionRequest, modificarInscripcionRequest } from "../services/clientes";
 
 export default function NuevaModificarInscripcion ({modalRef, modo, inscripcion, setInscripcion, datosInscripciones}) {
     const [pases, setPases] = useState([]);
@@ -36,25 +35,17 @@ export default function NuevaModificarInscripcion ({modalRef, modo, inscripcion,
 
     const handleForm = async(event) =>{
         event.preventDefault()
-        const erroresInscripcion = validarInscripcion(inscripcion, pases);
-
-        if(Object.keys(erroresInscripcion).length > 0){
-            setErrores(erroresInscripcion);
-            return
-        }
-
         try {
-            console.log(inscripcion)
-            await crearInscripcionRequest(inscripcion);
+            if(modo === 'nuevo')
+                await crearInscripcionRequest(inscripcion);
+            else
+                await modificarInscripcionRequest(inscripcion);
+
             datosInscripciones(inscripcion.idCliente, true);
             modalRef.current?.close();
 
         } catch (error) {
-            console.log(error);
-            setErrores(prev => ({
-                ...prev, 
-                api : error.response.data.message
-            }));
+            setErrores(error.response.data.errores)
         }
     }
 
@@ -117,7 +108,7 @@ export default function NuevaModificarInscripcion ({modalRef, modo, inscripcion,
                         <button className="w-1/3 bg-red-800 text-white text-center py-2 text-lg rounded-2xl hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900">Aceptar</button>
                         <button type='button' onClick={handleModalClose} className="w-1/3 bg-red-800 text-white text-center py-2  text-lg rounded-2xl hover:cursor-pointer  transition hover:ring-2 hover:ring-red-900">Cancelar</button>
                     </div>
-                    {errores?.api && <p className="text-red-600 text-right text-sm -mt-4 mb-4">{errores.api}</p>}
+                    {errores?.message && <p className="text-red-600 text-right text-sm -mt-4 mb-4">{errores.message}</p>}
                     
                 </form>
             </div>
